@@ -1,0 +1,64 @@
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local battlesFolder = ReplicatedStorage:WaitForChild("Battles")
+local twojemojenasze = "TomiToKozak13"
+local gui = Instance.new("ScreenGui")
+local napisW = Instance.new("TextLabel")
+local napisL = Instance.new("TextLabel")
+gui.Parent = game.Players.LocalPlayer.PlayerGui
+gui.DisplayOrder = 100
+napisW.Parent = gui
+napisL.Parent = gui
+napisW.Visible = false
+napisL.Visible = false
+napisW.Size = UDim2.new(0, 650, 0, 100)
+napisL.Size = UDim2.new(0, 700, 0, 100)
+napisW.AnchorPoint = Vector2.new(0.5, 0.5)
+napisL.AnchorPoint = Vector2.new(0.5, 0.5)
+napisW.Position = UDim2.new(0.5, 0, 0.7, 0)
+napisL.Position = UDim2.new(0.5, 0, 0.7, 0)
+napisW.Text = "wygrales cwelu zafajdany"
+napisL.Text ="ale przegryw z cb XDDDDDD"
+napisW.TextColor3 = Color3.fromRGB(0, 0, 0)
+napisL.TextColor3 = Color3.fromRGB(0, 0, 0)
+napisW.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
+napisL.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+napisW.TextSize = 30
+napisL.TextSize = 30
+
+
+
+
+local function monitor(battle)
+    local playback = battle:WaitForChild("Playback", 5)
+    local results = playback and playback:WaitForChild("Results", 5)
+    local plikiepsteina = results and results:WaitForChild(twojemojenasze, 5)
+    
+    if plikiepsteina then
+        local winnerObj = plikiepsteina:WaitForChild("Winner", 5)
+        if winnerObj and winnerObj:IsA("BoolValue") then
+            winnerObj.Changed:Connect(function(val)
+                if val == true then
+                end
+            end)
+            
+            if winnerObj.Value == true then
+				napisW.Visible = true
+				wait(2)
+				napisW.Visible = false
+            else)
+				napisL.Visible = true
+				wait(2)
+				napisL.Visible = false
+            end
+        end
+    end
+end
+
+for _, b in pairs(battlesFolder:GetChildren()) do
+    task.spawn(monitor, b)
+end
+
+battlesFolder.ChildAdded:Connect(function(b)
+    task.spawn(monitor, b)
+end)
+print("1")
