@@ -1,34 +1,49 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local battlesFolder = ReplicatedStorage:WaitForChild("Battles")
-local twojemojenasze = "TomiToKozak13"
+local twojemojenasze = ""
+
 local gui = Instance.new("ScreenGui")
-local napisW = Instance.new("TextLabel")
-local napisL = Instance.new("TextLabel")
 gui.Parent = game.Players.LocalPlayer.PlayerGui
 gui.DisplayOrder = 100
+
+local loginFrame = Instance.new("TextBox")
+loginFrame.Parent = gui
+loginFrame.Size = UDim2.new(0, 300, 0, 50)
+loginFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
+loginFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+loginFrame.PlaceholderText = "Enter your nickname..."
+loginFrame.Text = ""
+loginFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+loginFrame.TextColor3 = Color3.fromRGB(0, 0, 0)
+loginFrame.TextSize = 25
+
+local napisW = Instance.new("TextLabel")
 napisW.Parent = gui
-napisL.Parent = gui
 napisW.Visible = false
-napisL.Visible = false
 napisW.Size = UDim2.new(0, 650, 0, 100)
-napisL.Size = UDim2.new(0, 700, 0, 100)
 napisW.AnchorPoint = Vector2.new(0.5, 0.5)
-napisL.AnchorPoint = Vector2.new(0.5, 0.5)
 napisW.Position = UDim2.new(0.5, 0, 0.7, 0)
-napisL.Position = UDim2.new(0.5, 0, 0.7, 0)
 napisW.Text = "wygrales cwelu zafajdany"
-napisL.Text ="ale przegryw z cb XDDDDDD"
 napisW.TextColor3 = Color3.fromRGB(0, 0, 0)
-napisL.TextColor3 = Color3.fromRGB(0, 0, 0)
 napisW.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
-napisL.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
 napisW.TextSize = 30
+napisW.ZIndex = 1000
+
+local napisL = Instance.new("TextLabel")
+napisL.Parent = gui
+napisL.Visible = false
+napisL.Size = UDim2.new(0, 700, 0, 100)
+napisL.AnchorPoint = Vector2.new(0.5, 0.5)
+napisL.Position = UDim2.new(0.5, 0, 0.7, 0)
+napisL.Text ="ale przegryw z cb XDDDDDD"
+napisL.TextColor3 = Color3.fromRGB(0, 0, 0)
+napisL.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
 napisL.TextSize = 30
-
-
-
+napisL.ZIndex = 1000
 
 local function monitor(battle)
+    if twojemojenasze == "" then return end
+    
     local playback = battle:WaitForChild("Playback", 5)
     local results = playback and playback:WaitForChild("Results", 5)
     local plikiepsteina = results and results:WaitForChild(twojemojenasze, 5)
@@ -36,29 +51,33 @@ local function monitor(battle)
     if plikiepsteina then
         local winnerObj = plikiepsteina:WaitForChild("Winner", 5)
         if winnerObj and winnerObj:IsA("BoolValue") then
-            winnerObj.Changed:Connect(function(val)
-                if val == true then
-                end
-            end)
             
             if winnerObj.Value == true then
-				napisW.Visible = true
-				wait(2)
-				napisW.Visible = false
-            else)
-				napisL.Visible = true
-				wait(2)
-				napisL.Visible = false
+                napisW.Visible = true
+                task.wait(2)
+                napisW.Visible = false
+            else
+                napisL.Visible = true
+                task.wait(2)
+                napisL.Visible = false
             end
         end
     end
 end
 
-for _, b in pairs(battlesFolder:GetChildren()) do
-    task.spawn(monitor, b)
-end
+loginFrame.FocusLost:Connect(function(enterPressed)
+    if enterPressed and loginFrame.Text ~= "" then
+        twojemojenasze = loginFrame.Text
+        loginFrame.Visible = false
+        
+        for _, b in pairs(battlesFolder:GetChildren()) do
+            task.spawn(monitor, b)
+        end
+    end
+end)
 
 battlesFolder.ChildAdded:Connect(function(b)
     task.spawn(monitor, b)
 end)
+
 print("1")
