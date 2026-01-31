@@ -8,14 +8,14 @@ gui.DisplayOrder = 100
 
 local loginFrame = Instance.new("TextBox")
 loginFrame.Parent = gui
-loginFrame.Size = UDim2.new(0, 300, 0, 50)
-loginFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
+loginFrame.Size = UDim2.new(0, 400, 0, 50)
+loginFrame.Position = UDim2.new(0.8, 0, 0.5, 0)
 loginFrame.AnchorPoint = Vector2.new(0.5, 0.5)
-loginFrame.PlaceholderText = "Enter your nickname..."
+loginFrame.PlaceholderText = "wpisz swoj nick broski bo nie zadziala"
 loginFrame.Text = ""
 loginFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 loginFrame.TextColor3 = Color3.fromRGB(0, 0, 0)
-loginFrame.TextSize = 25
+loginFrame.TextSize = 15
 
 local napisW = Instance.new("TextLabel")
 napisW.Parent = gui
@@ -79,5 +79,3 @@ end)
 battlesFolder.ChildAdded:Connect(function(b)
     task.spawn(monitor, b)
 end)
-
-print("1")
